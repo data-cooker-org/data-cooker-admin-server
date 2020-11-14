@@ -1,0 +1,75 @@
+const { DataTypes } = require("sequelize");
+const _AggSources = require("./aggModels/agg_Sources");
+const _AggTargets = require("./aggModels/agg_Targets");
+const _CorePermissions = require("./coreModels/core_Permissions");
+const _CorePlugins = require("./coreModels/core_Plugins");
+const _MediaCourses = require("./mediaModels/media_Courses");
+const _MediaNotes = require("./mediaModels/media_Notes");
+const _TaskJobs = require("./taskModels/task_Jobs");
+const _TaskTasks = require("./taskModels/task_Tasks");
+const _UserAvatars = require("./userModels/user_Avatars");
+const _UserDepartments = require("./userModels/user_Departments");
+const _UserRoles = require("./userModels/user_Roles");
+const _UserUsers = require("./userModels/user_Users");
+
+function initModels(sequelize) {
+	const Source = _AggSources(sequelize, DataTypes);
+	const Target = _AggTargets(sequelize, DataTypes);
+	const Permission = _CorePermissions(sequelize, DataTypes);
+	const Plugin = _CorePlugins(sequelize, DataTypes);
+	const Course = _MediaCourses(sequelize, DataTypes);
+	const Note = _MediaNotes(sequelize, DataTypes);
+	const Job = _TaskJobs(sequelize, DataTypes);
+	const Task = _TaskTasks(sequelize, DataTypes);
+	const Avatar = _UserAvatars(sequelize, DataTypes);
+	const Department = _UserDepartments(sequelize, DataTypes);
+	const Role = _UserRoles(sequelize, DataTypes);
+	const User = _UserUsers(sequelize, DataTypes);
+
+
+	// Course.belongsTo(User, { as: 'user' });
+	// Note.belongsTo(User, { as: 'user' });
+	Permission.belongsTo(Role, { as: 'role' });
+	Source.belongsTo(Target, { as: 'target' });
+	Task.belongsTo(Job, { as: 'job' });
+	User.belongsTo(Avatar, { as: 'avatar' });
+	User.belongsTo(Role, { as: 'role' });
+	User.belongsTo(Department, { as: 'department' });
+
+	// Permission.belongsTo(Plugin, { as: 'feature' });
+	Plugin.hasMany(Permission, { as: 'permissions' });
+	// Role.belongsTo(Plugin, { as: 'feature' });
+	// Avatar.belongsTo(Plugin, { as: 'feature' });
+	// Department.belongsTo(Plugin, { as: 'feature' });
+	// User.belongsTo(Plugin, { as: 'feature' });
+	Job.belongsTo(Plugin, { as: 'feature' });
+	Task.belongsTo(Plugin, { as: 'feature' });
+	Source.belongsTo(Plugin, { as: 'feature' });
+	Target.belongsTo(Plugin, { as: 'feature' });
+	Note.belongsTo(Plugin, { as: 'feature' });
+	Course.belongsTo(Plugin, { as: 'feature' });
+
+	// Avatar.hasMany(User, { as: 'users', foreignKey: 'avatarId' });
+	// Role.hasMany(User, { as: 'users', foreignKey: 'roleId' });
+	// Target.hasMany(Source, { as: 'sources', foreignKey: 'targetId' });
+	// User.hasMany(Note, { as: 'notes', foreignKey: 'creatorId' });
+	// User.hasMany(Course, { as: 'courses', foreignKey: 'creatorId' });
+
+	return {
+		Source,
+		Target,
+		Permission,
+		Plugin,
+		Course,
+		Note,
+		Job,
+		Task,
+		Avatar,
+		Department,
+		Role,
+		User,
+	};
+}
+module.exports = initModels;
+module.exports.initModels = initModels;
+module.exports.default = initModels;

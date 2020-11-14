@@ -1,0 +1,22 @@
+{
+    "extends": "airbnb-base",
+    "plugins": [
+        "import"
+    ],
+    "rules": {
+		"no-console": "off",
+        "arrow-parens": [
+            "error",
+            "always"
+        ],
+	"linebreak-style": [
+			"error", 
+			"windows"
+		],
+	"indent": [0, "tab"],
+	"no-tabs": 0
+    },
+    "env": {
+        "jest": true
+    }
+}
