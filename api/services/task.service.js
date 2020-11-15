@@ -6,9 +6,28 @@ const schedule = require('node-schedule');
 const taskz = require("taskz");
 
 const { Job, Task } = require('../models');
-// const { Assigner } = require('./worker');
 
-// var WorkerCallback = (err, result) => any;
+class Tasker {
+	taskHandler;
+	constructor(taskOption) {
+		const { jobInfo, jobTasks } = taskOption.workerData;
+		const scheduledTasks = [];
+		jobTasks.forEach((task) => {
+			console.log('Initializing Task: ' + JSON.stringify(task.taskName));
+			var scheduledTask = {
+				text: task.taskName,
+				task: () => {
+					console.log('Running job task: ' + JSON.stringify(task.taskName));
+				}
+			};
+			scheduledTasks.push(scheduledTask);
+		});
+		this.taskHandler = schedule.scheduleJob(jobInfo.scheduleCron, function () {
+			console.log('Running job: ' + jobInfo.jobName);
+			taskz(scheduledTasks).run();
+		});
+	}
+};
 
 const taskService = () => {
 	const getAllJobs = () => {
@@ -54,27 +73,19 @@ const taskService = () => {
 		return tasks;
 	};
 
-	const scheduleJob = (jobInfo) => {
-		var scheduledTasks = [];
+	const runTasker = (jobInfo) => {
 		getJobTasks(jobInfo.id).then((tasks) => {
-			tasks.forEach((task) => {
-				const taskInfo = task.dataValues;
-				console.log('Initializing Task: ' + JSON.stringify(taskInfo.taskName));
-				var scheduledTask = {
-					text: taskInfo.taskName,
-					task: () => {
-						console.log('Running job task: ' + JSON.stringify(taskInfo.taskName));
-						// for (var i = 1; i < 10000000; i++) {
-						// 	for (var j = 1; j < 100000; j++) { var a = j; };
-						// };
-					}
-				};
-				scheduledTasks.push(scheduledTask);
-			});
-		});
-		return schedule.scheduleJob(jobInfo.scheduleCron, function () {
-			console.log('Running job: ' + jobInfo.jobName);
-			taskz(scheduledTasks).run();
+			var jobTasks = [];
+			for (var i = 0; i < tasks.length; i++) {
+				const taskInfo = tasks[i].dataValues;
+				console.log('Initializing task: ' + JSON.stringify(taskInfo.taskName));
+				jobTasks.push(taskInfo);
+			}
+			const jobDetail = { jobInfo, jobTasks };
+			const worker = new Tasker({ workerData: jobDetail });
+
+			// do some settings here
+			return worker;
 		});
 	}
 
@@ -94,14 +105,14 @@ const taskService = () => {
 				if (code !== 0)
 					throw new Error(`Worker stopped with exit code ${code}`);
 			});
-			return worker;	
+			return worker;
 		});
 	}
 
 	return {
 		getAllJobs,
 		getJobTasks,
-		scheduleJob,
+		runTasker,
 		runWorker
 	};
 };

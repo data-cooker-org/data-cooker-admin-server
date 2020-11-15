@@ -135,7 +135,7 @@ server.listen(config.port, () => {
 		jobs.forEach((job) => {
 			const jobInfo = job.dataValues;
 			console.log('Initializing job: ' + JSON.stringify(jobInfo.jobName));
-			// scheduledJobs[jobInfo.jobName] = taskService.scheduleJob(jobInfo);
+			// scheduledJobs[jobInfo.jobName] = taskService.runTasker(jobInfo);
 			scheduledJobs[jobInfo.jobName] = taskService.runWorker(workerScriptFilePath, jobInfo);
 			// scheduledJobs[jobInfo.jobName].postMessage('ping');  // test worker, correct if return "PING"
 		});
