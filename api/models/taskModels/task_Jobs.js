@@ -37,7 +37,7 @@ const Job = sequelize.define('Job', {
 		// },
 	},
 	jobEnabled: {
-		type: Sequelize.INTEGER,
+		type: Sequelize.BOOLEAN,
 		allowNull: true,
 		validate: {
 			notEmpty: {
@@ -46,7 +46,7 @@ const Job = sequelize.define('Job', {
 		},
 	},
 	repeatSchedule: {
-		type: Sequelize.INTEGER,
+		type: Sequelize.BOOLEAN,
 		allowNull: true,
 		validate: {
 			notEmpty: {
@@ -73,7 +73,7 @@ const Job = sequelize.define('Job', {
 		},
 	},
 	scheduleBegin: {
-		type: Sequelize.STRING,
+		type: Sequelize.DATE,
 		allowNull: false,
 		validate: {
 			notEmpty: {
@@ -82,7 +82,7 @@ const Job = sequelize.define('Job', {
 		},
 	},
 	scheduleEnd: {
-		type: Sequelize.STRING,
+		type: Sequelize.DATE,
 		allowNull: true,
 		validate: {
 			notEmpty: {

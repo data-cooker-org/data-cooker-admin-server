@@ -57,7 +57,7 @@ const Target = sequelize.define('Target', {
 		},
 	},
 	batchProcessed: {
-		type: Sequelize.INTEGER,
+		type: Sequelize.DATE,
 		allowNull: false,
 		validate: {
 			notEmpty: {
@@ -66,7 +66,7 @@ const Target = sequelize.define('Target', {
 		},
 	},
 	batchProcessing: {
-		type: Sequelize.INTEGER,
+		type: Sequelize.DATE,
 		allowNull: true,
 		validate: {
 			notEmpty: {
@@ -75,7 +75,7 @@ const Target = sequelize.define('Target', {
 		},
 	},
 	batchMicroChunkCurrent: {
-		type: Sequelize.INTEGER,
+		type: Sequelize.DATE,
 		allowNull: true,
 	},
 	batchScheduleType: {
@@ -88,7 +88,7 @@ const Target = sequelize.define('Target', {
 		},
 	},
 	batchScheduleLast: {
-		type: Sequelize.INTEGER,
+		type: Sequelize.DATE,
 		allowNull: true,
 	},
 	patternColumns: {
@@ -119,7 +119,7 @@ const Target = sequelize.define('Target', {
 		},
 	},
 	groupByFlexible: {
-		type: Sequelize.INTEGER,
+		type: Sequelize.BOOLEAN,
 		allowNull: false,
 		validate: {
 			notEmpty: {

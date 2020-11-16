@@ -29,7 +29,7 @@ const Source = sequelize.define('Source', {
 		},
 	},
 	sourceEnabled: {
-		type: Sequelize.INTEGER,
+		type: Sequelize.BOOLEAN,
 		allowNull: false,
 		validate: {
 			notEmpty: {
@@ -38,7 +38,7 @@ const Source = sequelize.define('Source', {
 		},
 	},
 	sourceReadyTime: {
-		type: Sequelize.STRING,
+		type: Sequelize.DATE,
 		allowNull: false,
 		validate: {
 			notEmpty: {
@@ -47,7 +47,7 @@ const Source = sequelize.define('Source', {
 		},
 	},
 	sourceCheckTime: {
-		type: Sequelize.STRING,
+		type: Sequelize.DATE,
 		allowNull: false,
 		validate: {
 			notEmpty: {
@@ -74,7 +74,7 @@ const Source = sequelize.define('Source', {
 		},
 	},
 	patternFlexible: {
-		type: Sequelize.INTEGER,
+		type: Sequelize.BOOLEAN,
 		allowNull: false,
 		validate: {
 			notEmpty: {
