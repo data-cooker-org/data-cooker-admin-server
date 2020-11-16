@@ -8,7 +8,7 @@ const AvatarController = () => {
 			attributes: ['id', 'avatarData'],
 			where: {
 				[Op.or]: [
-					{ isPublic: [1, (req.token.id !== 1)] },
+					{ isPublic: [true, (req.token.id !== 1)] },
 					{ creatorId: req.token.id }
 				]
 			}

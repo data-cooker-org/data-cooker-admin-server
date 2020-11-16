@@ -55,7 +55,7 @@ const Task = sequelize.define('Task', {
 		},
 	},
 	stopOnError: {
-		type: Sequelize.INTEGER,
+		type: Sequelize.BOOLEAN,
 		allowNull: true,
 		validate: {
 			notEmpty: {
@@ -64,7 +64,7 @@ const Task = sequelize.define('Task', {
 		},
 	},
 	lastScheduledTime: {
-		type: Sequelize.STRING,
+		type: Sequelize.DATE,
 		allowNull: true,
 		validate: {
 			notEmpty: {
@@ -73,7 +73,7 @@ const Task = sequelize.define('Task', {
 		},
 	},
 	lastCompleteTime: {
-		type: Sequelize.STRING,
+		type: Sequelize.DATE,
 		allowNull: true,
 		validate: {
 			notEmpty: {

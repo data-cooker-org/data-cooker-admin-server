@@ -10,11 +10,11 @@ const Avatar = sequelize.define('Avatar', {
 	//   autoIncrement: true,
 	// },
 	avatarData: {
-		type: Sequelize.STRING,
+		type: Sequelize.STRING(8000),
 		unique: false,
 	},
 	isPublic: {
-		type: Sequelize.INTEGER,
+		type: Sequelize.BOOLEAN,
 		allowNull: false,
 	},
 	creatorId: Sequelize.INTEGER,
