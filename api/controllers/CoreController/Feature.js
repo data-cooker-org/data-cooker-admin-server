@@ -18,7 +18,7 @@ const FeatureController = () => {
 		});
 
 		if (feature) {
-			res.json({ feature });
+			res.json(feature);
 		} else {
 			res.status(404).json({ message: 'Feature id not found.' });
 		}

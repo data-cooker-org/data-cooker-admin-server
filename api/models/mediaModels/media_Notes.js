@@ -1,42 +1,44 @@
-const { Sequelize } = require('sequelize');
+'use strict';
+const {
+	Model
+} = require('sequelize');
+module.exports = (sequelize, DataTypes) => {
+	class Note extends Model {
+		/**
+		 * Helper method for defining associations.
+		 * This method is not a part of Sequelize lifecycle.
+		 * The `models/index` file will call this method automatically.
+		 */
+		static associate(models) {
+			// define association here
+			Note.belongsTo(models.Feature, {
+				as: 'feature',
+				foreignKey: {
+					fieldName: 'featureId',
+				},
+			});
+		}
+	};
 
-const sequelize = require('../../../config/database');
-const { User } = require("../userModels/user_Users");
-
-const Note = sequelize.define('Note', {
-	// id: {
-	//   type: Sequelize.INTEGER,
-	//   primaryKey: true,
-	//   autoIncrement: true,
-	// },
-	note: {
-		type: Sequelize.STRING,
-	},
-	creatorId: {
-		type: Sequelize.INTEGER,
-		allowNull: true
-	},
-}, {
-	sequelize, // We need to pass the connection instance
-	modelName: 'Note', // We need to choose the model name
-	tableName: 'media_Notes'
-});
-
-Note.associate = (models) => {
-	Note.belongsTo(models.Feature, {
-		as: 'feature',
-		foreignKey: {
-			fieldName: 'featureId',
+	Note.init({
+		// id: {
+		//   type: DataTypes.INTEGER,
+		//   primaryKey: true,
+		//   autoIncrement: true,
+		// },
+		note: {
+			type: DataTypes.STRING,
 		},
+		creatorId: {
+			type: DataTypes.INTEGER,
+			allowNull: true
+		},
+	}, {
+		sequelize, // We need to pass the connection instance
+		modelName: 'Note', // We need to choose the model name
+		tableName: 'media_Notes'
 	});
 
-	// Note.belongsTo(models.User, {
-	// 	as: 'user',
-	// 	foreignKey: {
-	// 		fieldName: 'creatorId',
-	// 		allowNull: false,
-	// 	},
-	// });
+	return Note;
 };
 
-module.exports = { Note };

@@ -1,4 +1,5 @@
 'use strict';
+const { Op } = require('sequelize');
 
 module.exports = {
 	up: async (queryInterface, Sequelize) => {
@@ -11,28 +12,34 @@ module.exports = {
 		 *   isBetaMember: false
 		 * }], {});
 		*/
-		return queryInterface.bulkInsert('task_Jobs', [
+		return queryInterface.bulkInsert('user_Departments', [
 			{
-				"featureId": 1,
-				"jobName": "Test job 1",
-				"jobDescription": "test job 1 ...",
-				"scheduleType": "hour",
-				"scheduleCron": "*/2 * * * *",
-				scheduleBegin: new Date(),
-				"creatorId": 2,
+				"id": 1,
+				"department": "Data Engineering",
 				createdAt: new Date(),
 				updatedAt: new Date()
+
 			},
 			{
-				"featureId": 1,
-				"jobName": "Test job 2",
-				"jobDescription": "Test job 2 ...",
-				"scheduleType": "hour",
-				"scheduleCron": "* * * * *",
-				scheduleBegin: new Date(),
-				"creatorId": 2,
+				"id": 2,
+				"department": "Data Analyticals",
 				createdAt: new Date(),
 				updatedAt: new Date()
+
+			},
+			{
+				"id": 3,
+				"department": "Data Science",
+				createdAt: new Date(),
+				updatedAt: new Date()
+
+			},
+			{
+				"id": 4,
+				"department": "Business Intelligence",
+				createdAt: new Date(),
+				updatedAt: new Date()
+
 			}
 		], {});
 	},
@@ -44,9 +51,11 @@ module.exports = {
 		 * Example:
 		 * await queryInterface.bulkDelete('People', null, {});
 		 */
-		return queryInterface.bulkDelete('task_Jobs', [
+		return queryInterface.bulkDelete('user_Departments', [
 			{
-				id: 0
+				id: {
+					[Op.gt]: -9
+				  }
 			}
 		])
 	}

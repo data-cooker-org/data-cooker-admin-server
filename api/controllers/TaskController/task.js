@@ -77,7 +77,7 @@ const TaskController = () => {
 		});
 
 		if (task) {
-			res.json({ task });
+			res.json(task);
 		} else {
 			res.status(404).json({ message: 'Task id not found.' });
 		}

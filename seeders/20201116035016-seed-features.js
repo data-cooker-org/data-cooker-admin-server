@@ -1,4 +1,5 @@
 'use strict';
+const { Op } = require('sequelize');
 
 module.exports = {
 	up: async (queryInterface, Sequelize) => {
@@ -11,29 +12,34 @@ module.exports = {
 		 *   isBetaMember: false
 		 * }], {});
 		*/
-		return queryInterface.bulkInsert('media_Notes', [
+		return queryInterface.bulkInsert('core_Features', [
 			{
-				"featureId": -1,
-				"note": "This is first note ..",
-				"creatorId": 1,
+				"id": -1,
+				"featureName": "Media",
 				createdAt: new Date(),
 				updatedAt: new Date()
 
 			},
 			{
-				"featureId": -1,
-				"note": "This is second note ..",
-				"creatorId": 1,
+				"id": 0,
+				"featureName": "User",
 				createdAt: new Date(),
 				updatedAt: new Date()
 
 			},
 			{
-				"featureId": -1,
-				"note": "This is third note ..",
-				"creatorId": 2,
+				"id": 1,
+				"featureName": "Task",
 				createdAt: new Date(),
 				updatedAt: new Date()
+
+			},
+			{
+				"id": 2,
+				"featureName": "Agg",
+				createdAt: new Date(),
+				updatedAt: new Date()
+
 			}
 		], {});
 	},
@@ -45,11 +51,12 @@ module.exports = {
 		 * Example:
 		 * await queryInterface.bulkDelete('People', null, {});
 		 */
-		return queryInterface.bulkDelete('media_Notes', [
+		return queryInterface.bulkDelete('core_Features', [
 			{
-				id: 0
+				id: {
+					[Op.gt]: -9
+				  }
 			}
 		])
 	}
 };
-

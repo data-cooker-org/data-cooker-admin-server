@@ -1,4 +1,5 @@
 'use strict';
+const { Op } = require('sequelize');
 
 module.exports = {
 	up: async (queryInterface, Sequelize) => {
@@ -11,31 +12,39 @@ module.exports = {
 		 *   isBetaMember: false
 		 * }], {});
 		*/
-		return queryInterface.bulkInsert('user_Departments', [
+		return queryInterface.bulkInsert('core_Permissions', [
+			{
+				"id": -1,
+				"permisionNote": "Feature -1 and Role 1",
+				"featureId": -1,
+				"roleId": 1,
+				createdAt: new Date(),
+				updatedAt: new Date()
+
+			},
+			{
+				"id": 0,
+				"permisionNote": "Feature 0 and Role 1",
+				"featureId": 0,
+				"roleId": 1,
+				createdAt: new Date(),
+				updatedAt: new Date()
+
+			},
 			{
 				"id": 1,
-				"department": "Data Engineering",
+				"permisionNote": "Feature 1 and Role 2",
+				"featureId": 1,
+				"roleId": 2,
 				createdAt: new Date(),
 				updatedAt: new Date()
 
 			},
 			{
 				"id": 2,
-				"department": "Data Analyticals",
-				createdAt: new Date(),
-				updatedAt: new Date()
-
-			},
-			{
-				"id": 3,
-				"department": "Data Science",
-				createdAt: new Date(),
-				updatedAt: new Date()
-
-			},
-			{
-				"id": 4,
-				"department": "Business Intelligence",
+				"permisionNote": "Feature 2 and Role 2",
+				"featureId": 2,
+				"roleId": 2,
 				createdAt: new Date(),
 				updatedAt: new Date()
 
@@ -50,9 +59,11 @@ module.exports = {
 		 * Example:
 		 * await queryInterface.bulkDelete('People', null, {});
 		 */
-		return queryInterface.bulkDelete('user_Departments', [
+		return queryInterface.bulkDelete('core_Permissions', [
 			{
-				id: 0
+				id: {
+					[Op.gt]: -9
+				  }
 			}
 		])
 	}

@@ -1,4 +1,5 @@
 'use strict';
+const { Op } = require('sequelize');
 
 module.exports = {
 	up: async (queryInterface, Sequelize) => {
@@ -16,6 +17,7 @@ module.exports = {
 				"jobStep": 1,
 				"featureId": 1,
 				"taskName": "test_task_1",
+				"taskDefinition": "{\"featureId\": 0}",
 				"stopOnError": true,
 				taskWorker: 1,
 				"creatorId": 2,
@@ -28,6 +30,7 @@ module.exports = {
 				"jobStep": 2,
 				"featureId": 1,
 				"taskName": "test_task_2",
+				"taskDefinition": "{\"featureId\": 2, \"targetId\": 1, \"targetData\": \"test_target_1\"}",
 				"stopOnError": null,
 				taskWorker: 1,
 				"creatorId": 2,
@@ -40,6 +43,7 @@ module.exports = {
 				"jobStep": 3,
 				"featureId": 1,
 				"taskName": "test_task_3",
+				"taskDefinition": "{\"featureId\": 0}",
 				"stopOnError": null,
 				taskWorker: 1,
 				"creatorId": 2,
@@ -52,6 +56,7 @@ module.exports = {
 				"jobStep": 1,
 				"featureId": 1,
 				"taskName": "test_task_4",
+				"taskDefinition": "{\"featureId\": 2, \"targetId\": 2,  \"targetData\": \"test_target_2\"}",
 				"stopOnError": true,
 				taskWorker: 2,
 				"creatorId": 2,
@@ -64,6 +69,7 @@ module.exports = {
 				"jobStep": 2,
 				"featureId": 1,
 				"taskName": "test_task_5",
+				"taskDefinition": "{\"featureId\": 0}",
 				"stopOnError": null,
 				taskWorker: 2,
 				"creatorId": 2,
@@ -84,7 +90,9 @@ module.exports = {
 		 */
 		return queryInterface.bulkDelete('task_Tasks', [
 			{
-				id: 0
+				id: {
+					[Op.gt]: -9
+				  }
 			}
 		])
 	}

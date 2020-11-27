@@ -18,7 +18,7 @@ const RoleController = () => {
 		});
 
 		if (role) {
-			res.json({ role });
+			res.json(role);
 		} else {
 			res.status(404).json({ message: 'Role id not found.' });
 		}

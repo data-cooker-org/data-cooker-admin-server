@@ -69,7 +69,7 @@ const UserController = () => {
 		});
 
 		if (user) {
-			res.json({ user });
+			res.json(user);
 		} else {
 			res.status(404).json({ message: 'User id not found.' });
 		}

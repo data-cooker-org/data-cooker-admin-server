@@ -17,7 +17,7 @@ const PermissionController = () => {
 		});
 
 		if (permission) {
-			res.json({ permission });
+			res.json(permission);
 		} else {
 			res.status(404).json({ message: 'Permission id not found.' });
 		}

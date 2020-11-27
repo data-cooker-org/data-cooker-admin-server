@@ -1,4 +1,5 @@
 'use strict';
+const { Op } = require('sequelize');
 
 module.exports = {
 	up: async (queryInterface, Sequelize) => {
@@ -21,8 +22,8 @@ module.exports = {
 				sourceReadyTime: new Date(),
 				sourceCheckTime: new Date(),
 				sourceCheckQuery: new Date(),
-				patternDefault: 1,
-				patternFlexible: true,
+				patternDefault: 0,
+				patternFlexible: false,
 				"creatorId": 2,
 				"targetId": 1,
 				createdAt: new Date(),
@@ -38,8 +39,8 @@ module.exports = {
 				sourceReadyTime: new Date(),
 				sourceCheckTime: new Date(),
 				sourceCheckQuery: new Date(),
-				patternDefault: 1,
-				patternFlexible: true,
+				patternDefault: 0,
+				patternFlexible: false,
 				"creatorId": 2,
 				"targetId": 1,
 				createdAt: new Date(),
@@ -55,8 +56,8 @@ module.exports = {
 				sourceReadyTime: new Date(),
 				sourceCheckTime: new Date(),
 				sourceCheckQuery: new Date(),
-				patternDefault: 1,
-				patternFlexible: true,
+				patternDefault: 0,
+				patternFlexible: false,
 				"creatorId": 2,
 				"targetId": 1,
 				createdAt: new Date(),
@@ -72,8 +73,8 @@ module.exports = {
 				sourceReadyTime: new Date(),
 				sourceCheckTime: new Date(),
 				sourceCheckQuery: new Date(),
-				patternDefault: 1,
-				patternFlexible: true,
+				patternDefault: 0,
+				patternFlexible: false,
 				"creatorId": 2,
 				"targetId": 2,
 				createdAt: new Date(),
@@ -89,8 +90,8 @@ module.exports = {
 				sourceReadyTime: new Date(),
 				sourceCheckTime: new Date(),
 				sourceCheckQuery: new Date(),
-				patternDefault: 1,
-				patternFlexible: true,
+				patternDefault: 0,
+				patternFlexible: false,
 				"creatorId": 2,
 				"targetId": 2,
 				createdAt: new Date(),
@@ -109,7 +110,9 @@ module.exports = {
 		 */
 		return queryInterface.bulkDelete('agg_Sources', [
 			{
-				id: 0
+				id: {
+					[Op.gt]: -9
+				  }
 			}
 		])
 	}

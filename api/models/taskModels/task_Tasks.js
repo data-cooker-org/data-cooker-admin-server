@@ -1,114 +1,122 @@
-const { Sequelize } = require('sequelize');
+'use strict';
+const {
+	Model
+} = require('sequelize');
+module.exports = (sequelize, DataTypes) => {
+	class Task extends Model {
+		/**
+		 * Helper method for defining associations.
+		 * This method is not a part of Sequelize lifecycle.
+		 * The `models/index` file will call this method automatically.
+		 */
+		static associate(models) {
+			// define association here
+			Task.belongsTo(models.Feature, {
+				as: 'feature',
+				foreignKey: {
+					fieldName: 'featureId',
+				},
+			});
 
-const sequelize = require('../../../config/database');
-const { Job } = require('./task_Jobs');
+			Task.belongsTo(models.Job, {
+				as: 'job',
+				foreignKey: {
+					fieldName: 'jobId',
+					allowNull: false,
+				},
+			});
+		}
+	};
 
-const Task = sequelize.define('Task', {
-	// id: {
-	//   type: Sequelize.INTEGER,
-	//   primaryKey: true,
-	//   autoIncrement: true,
-	// },
-	jobStep: {
-		type: Sequelize.INTEGER,
-		allowNull: false,
-		validate: {
-			notEmpty: {
-				msg: 'Please enter a project/stream label of the aggregation',
-			},
-		},
-	},
-	taskName: {
-		type: Sequelize.STRING,
-		allowNull: false,
-		validate: {
-			notEmpty: {
-				msg: 'Please enter a task data name',
-			},
-		},
-	},
-	taskDescription: {
-		type: Sequelize.STRING,
-		allowNull: true,
-		validate: {
-			notEmpty: {
-				msg: 'Please enter a true or false to enable or disable task',
-			},
-		},
-	},
-	taskWorker: {
-		type: Sequelize.INTEGER,
-		allowNull: false,
-		validate: {
-			notEmpty: {
-				msg: 'Please enter a true or false to enable or disable task',
-			},
-		},
-	},
-	taskStatus: {
-		type: Sequelize.STRING,
-		allowNull: true,
-		validate: {
-			notEmpty: {
-				msg: 'Please enter a description',
-			},
-		},
-	},
-	stopOnError: {
-		type: Sequelize.BOOLEAN,
-		allowNull: true,
-		validate: {
-			notEmpty: {
-				msg: 'Please enter a true or false for stop on error',
-			},
-		},
-	},
-	lastScheduledTime: {
-		type: Sequelize.DATE,
-		allowNull: true,
-		validate: {
-			notEmpty: {
-				msg: 'Please enter a true or false to enable or disable task',
-			},
-		},
-	},
-	lastCompleteTime: {
-		type: Sequelize.DATE,
-		allowNull: true,
-		validate: {
-			notEmpty: {
-				msg: 'Please enter a true or false to enable or disable task',
-			},
-		},
-	},
-	creatorId: Sequelize.INTEGER,
-	// jobId: {
-	// 	type: Sequelize.INTEGER,
-	// 	allowNull: true
-	// },
-}, {
-	sequelize, // We need to pass the connection instance
-	modelName: 'Task', // We need to choose the model name
-	tableName: 'task_Tasks'
-});
-
-Task.associate = (models) => {
-	Task.belongsTo(models.Feature, {
-		as: 'feature',
-		foreignKey: {
-			fieldName: 'featureId',
-		},
-	});
-
-	Task.belongsTo(models.Job, {
-		as: 'job',
-		foreignKey: {
-			fieldName: 'jobId',
+	Task.init({
+		// id: {
+		//   type: DataTypes.INTEGER,
+		//   primaryKey: true,
+		//   autoIncrement: true,
+		// },
+		jobStep: {
+			type: DataTypes.INTEGER,
 			allowNull: false,
+			validate: {
+				notEmpty: {
+					msg: 'Please enter a project/stream label of the aggregation',
+				},
+			},
 		},
+		taskName: {
+			type: DataTypes.STRING,
+			allowNull: false,
+			validate: {
+				notEmpty: {
+					msg: 'Please enter a task data name',
+				},
+			},
+		},
+		taskDescription: {
+			type: DataTypes.STRING,
+			allowNull: true,
+			validate: {
+				notEmpty: {
+					msg: 'Please enter a true or false to enable or disable task',
+				},
+			},
+		},
+		taskWorker: {
+			type: DataTypes.INTEGER,
+			allowNull: false,
+			validate: {
+				notEmpty: {
+					msg: 'Please enter a true or false to enable or disable task',
+				},
+			},
+		},
+		taskStatus: {
+			type: DataTypes.STRING,
+			allowNull: true,
+			validate: {
+				notEmpty: {
+					msg: 'Please enter a description',
+				},
+			},
+		},
+		stopOnError: {
+			type: DataTypes.BOOLEAN,
+			allowNull: true,
+			validate: {
+				notEmpty: {
+					msg: 'Please enter a true or false for stop on error',
+				},
+			},
+		},
+		lastScheduledTime: {
+			type: DataTypes.DATE,
+			allowNull: true,
+			validate: {
+				notEmpty: {
+					msg: 'Please enter a true or false to enable or disable task',
+				},
+			},
+		},
+		lastCompleteTime: {
+			type: DataTypes.DATE,
+			allowNull: true,
+			validate: {
+				notEmpty: {
+					msg: 'Please enter a true or false to enable or disable task',
+				},
+			},
+		},
+		creatorId: DataTypes.INTEGER,
+		// jobId: {
+		// 	type: DataTypes.INTEGER,
+		// 	allowNull: true
+		// },
+	}, {
+		sequelize, // We need to pass the connection instance
+		modelName: 'Task', // We need to choose the model name
+		tableName: 'task_Tasks'
 	});
+
+
+	return Task;
 };
-
-
-
-module.exports = { Task };

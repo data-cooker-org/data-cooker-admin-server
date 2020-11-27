@@ -40,9 +40,7 @@ const CourseController = () => {
 			// Checks for match for course
 			if (course) {
 				res.status(200);
-				res.json({
-					course
-				});
+				res.json(course);
 			} else {
 				const err = new Error('This course does not exist.');
 				err.status = 404;

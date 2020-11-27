@@ -64,7 +64,7 @@ const JobController = () => {
 		});
 
 		if (job) {
-			res.json({ job });
+			res.json(job);
 		} else {
 			res.status(404).json({ message: 'Job id not found.' });
 		}

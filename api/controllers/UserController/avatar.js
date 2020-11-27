@@ -24,7 +24,7 @@ const AvatarController = () => {
 		});
 
 		if (avatar) {
-			res.json({ avatar });
+			res.json(avatar);
 		} else {
 			res.status(404).json({ message: 'Avatar id not found.' });
 		}
