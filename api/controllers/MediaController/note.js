@@ -40,9 +40,7 @@ const NoteController = () => {
 			// Checks for match for note
 			if (note) {
 				res.status(200);
-				res.json({
-					note
-				});
+				res.json(note);
 			} else {
 				const err = new Error('This note does not exist.');
 				err.status = 404;

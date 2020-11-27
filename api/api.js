@@ -12,9 +12,10 @@ const mapRoutes = require('express-routes-mapper');
 /**
  * self owned libraries
  */
-const taskService = require('./services/task.service')();
-
-const workerScriptFilePath = require.resolve('./services/worker-script.js');
+// run taskers as a local tasks
+const TaskController = require('./executors/TaskController')();
+// run workers as threads
+const WorkerFilePath = require.resolve('./executors/ThreadWorker.js');
 
 /**
  * server configuration
@@ -131,12 +132,12 @@ server.listen(config.port, () => {
 		process.exit(1);
 	}
 
-	taskService.getAllJobs().then((jobs) => {
+	TaskController.getAllJobs().then((jobs) => {
 		jobs.forEach((job) => {
 			const jobInfo = job.dataValues;
 			console.log('Initializing job: ' + JSON.stringify(jobInfo.jobName));
-			// scheduledJobs[jobInfo.jobName] = taskService.runTasker(jobInfo);
-			scheduledJobs[jobInfo.jobName] = taskService.runWorker(workerScriptFilePath, jobInfo);
+			// scheduledJobs[jobInfo.jobName] = TaskController.runTasker(jobInfo);
+			scheduledJobs[jobInfo.jobName] = TaskController.runWorker(WorkerFilePath, jobInfo);
 			// scheduledJobs[jobInfo.jobName].postMessage('ping');  // test worker, correct if return "PING"
 		});
 	});

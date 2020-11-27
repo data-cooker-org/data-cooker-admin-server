@@ -1,5 +1,7 @@
 'use strict';
+const { Op } = require('sequelize');
 const { password } = require('../api/services/bcrypt.service')();
+
 module.exports = {
 	up: async (queryInterface, Sequelize) => {
 		/**
@@ -63,7 +65,9 @@ module.exports = {
 		 */
 		return queryInterface.bulkDelete('user_Users', [
 			{
-				id: 0
+				id: {
+					[Op.gt]: -9
+				  }
 			}
 		])
 	}

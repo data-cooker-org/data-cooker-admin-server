@@ -18,7 +18,7 @@ const DepartmentController = () => {
 		});
 
 		if (department) {
-			res.json({ department });
+			res.json(department);
 		} else {
 			res.status(404).json({ message: 'Department id not found.' });
 		}

@@ -29,7 +29,7 @@ const TargetController = () => {
 				'groupByFlexible',
 				'aggregateColumns',
 				'aggregateFunctions',
-				'suppoetSpVersions',
+				'supportSpVersions',
 				'creatorId',
 			],
 			include: [
@@ -71,13 +71,13 @@ const TargetController = () => {
 				'groupByFlexible',
 				'aggregateColumns',
 				'aggregateFunctions',
-				'suppoetSpVersions',
+				'supportSpVersions',
 				'creatorId',
 			],
 		});
 
 		if (target) {
-			res.json({ target });
+			res.json(target);
 		} else {
 			res.status(404).json({ message: 'Target id not found.' });
 		}
@@ -125,7 +125,7 @@ const TargetController = () => {
 					groupByFlexible: target.groupByFlexible,
 					aggregateColumns: target.aggregateColumns,
 					aggregateFunctions: target.aggregateFunctions,
-					suppoetSpVersions: target.suppoetSpVersions,
+					supportSpVersions: target.supportSpVersions,
 					creatorId: 1,
 				}).then((created) => {
 					const { id } = created;
@@ -170,7 +170,7 @@ const TargetController = () => {
 					'groupByFlexible',
 					'aggregateColumns',
 					'aggregateFunctions',
-					'suppoetSpVersions',
+					'supportSpVersions',
 					// 'creatorId',
 				],
 			}).then((target) => {
@@ -194,7 +194,7 @@ const TargetController = () => {
 						groupByFlexible: req.body.groupByFlexible ? req.body.groupByFlexible : target.groupByFlexible,
 						aggregateColumns: req.body.aggregateColumns ? req.body.aggregateColumns : target.aggregateColumns,
 						aggregateFunctions: req.body.aggregateFunctions ? req.body.aggregateFunctions : target.aggregateFunctions,
-						suppoetSpVersions: req.body.suppoetSpVersions ? req.body.suppoetSpVersions : target.suppoetSpVersions,
+						supportSpVersions: req.body.supportSpVersions ? req.body.supportSpVersions : target.supportSpVersions,
 					};
 
 					// update target details in Targets table
@@ -216,7 +216,7 @@ const TargetController = () => {
 						groupByFlexible: updatedTrget.groupByFlexible,
 						aggregateColumns: updatedTrget.aggregateColumns,
 						aggregateFunctions: updatedTrget.aggregateFunctions,
-						suppoetSpVersions: updatedTrget.suppoetSpVersions,
+						supportSpVersions: updatedTrget.supportSpVersions,
 						// creatorId: 1,
 					}, {
 						where: {
@@ -273,7 +273,7 @@ const TargetController = () => {
 				'groupByFlexible',
 				'aggregateColumns',
 				'aggregateFunctions',
-				'suppoetSpVersions',
+				'supportSpVersions',
 				// 'creatorId'
 			]
 		}).then((target) => {

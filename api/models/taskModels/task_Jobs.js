@@ -1,126 +1,126 @@
-const { Sequelize } = require('sequelize');
+'use strict';
+const {
+	Model
+} = require('sequelize');
+module.exports = (sequelize, DataTypes) => {
+	class Job extends Model {
+		/**
+		 * Helper method for defining associations.
+		 * This method is not a part of Sequelize lifecycle.
+		 * The `models/index` file will call this method automatically.
+		 */
+		static associate(models) {
+			// define association here
+			Job.belongsTo(models.Feature, {
+				as: 'feature',
+				foreignKey: {
+					fieldName: 'featureId',
+				},
+			});
+		}
+	};
 
-const sequelize = require('../../../config/database');
-const { Task } = require('./task_Tasks');
-
-const Job = sequelize.define('Job', {
-	// id: {
-	//   type: Sequelize.INTEGER,
-	//   primaryKey: true,
-	//   autoIncrement: true,
-	// },
-	jobName: {
-		type: Sequelize.STRING,
-		allowNull: false,
-		validate: {
-			notEmpty: {
-				msg: 'Please enter a job Name',
-			},
-		},
-	},
-	jobDescription: {
-		type: Sequelize.STRING,
-		allowNull: true,
-		validate: {
-			notEmpty: {
-				msg: 'Please enter a data timestamp column name',
-			},
-		},
-	},
-	jobStatus: {
-		type: Sequelize.STRING,
-		allowNull: true,
-		// validate: {
-		// 	notEmpty: {
-		// 		msg: 'Please choose the enable or disable',
-		// 	},
+	Job.init({
+		// id: {
+		//   type: DataTypes.INTEGER,
+		//   primaryKey: true,
+		//   autoIncrement: true,
 		// },
-	},
-	jobEnabled: {
-		type: Sequelize.BOOLEAN,
-		allowNull: true,
-		validate: {
-			notEmpty: {
-				msg: 'Please choose the enable or disable',
+		jobName: {
+			type: DataTypes.STRING,
+			allowNull: false,
+			validate: {
+				notEmpty: {
+					msg: 'Please enter a job Name',
+				},
 			},
 		},
-	},
-	repeatSchedule: {
-		type: Sequelize.BOOLEAN,
-		allowNull: true,
-		validate: {
-			notEmpty: {
-				msg: 'Please choose true or false for repeat',
+		jobDescription: {
+			type: DataTypes.STRING,
+			allowNull: true,
+			validate: {
+				notEmpty: {
+					msg: 'Please enter a data timestamp column name',
+				},
 			},
 		},
-	},
-	scheduleType: {
-		type: Sequelize.STRING,
-		allowNull: false,
-		validate: {
-			notEmpty: {
-				msg: 'Please enter a time unit about how often data change',
+		jobStatus: {
+			type: DataTypes.STRING,
+			allowNull: true,
+			// validate: {
+			// 	notEmpty: {
+			// 		msg: 'Please choose the enable or disable',
+			// 	},
+			// },
+		},
+		jobEnabled: {
+			type: DataTypes.BOOLEAN,
+			allowNull: true,
+			validate: {
+				notEmpty: {
+					msg: 'Please choose the enable or disable',
+				},
 			},
 		},
-	},
-	scheduleCron: {
-		type: Sequelize.STRING,
-		allowNull: false,
-		validate: {
-			notEmpty: {
-				msg: 'Please enter a cron expression',
+		repeatSchedule: {
+			type: DataTypes.BOOLEAN,
+			allowNull: true,
+			validate: {
+				notEmpty: {
+					msg: 'Please choose true or false for repeat',
+				},
 			},
 		},
-	},
-	scheduleBegin: {
-		type: Sequelize.DATE,
-		allowNull: false,
-		validate: {
-			notEmpty: {
-				msg: 'Please enter a datatime for schedule begin',
+		scheduleType: {
+			type: DataTypes.STRING,
+			allowNull: false,
+			validate: {
+				notEmpty: {
+					msg: 'Please enter a time unit about how often data change',
+				},
 			},
 		},
-	},
-	scheduleEnd: {
-		type: Sequelize.DATE,
-		allowNull: true,
-		validate: {
-			notEmpty: {
-				msg: 'Please enter a datetime for schedule end',
+		scheduleCron: {
+			type: DataTypes.STRING,
+			allowNull: false,
+			validate: {
+				notEmpty: {
+					msg: 'Please enter a cron expression',
+				},
 			},
 		},
-	},
-	nextSchedule: {
-		type: Sequelize.STRING,
-		allowNull: true,
-	},
-	lastSchedule: {
-		type: Sequelize.STRING,
-		allowNull: true,
-	},
-	creatorId: Sequelize.INTEGER,
-}, {
-	sequelize, // We need to pass the connection instance
-	modelName: 'Job', // We need to choose the model name
-	tableName: "task_Jobs"
-});
-
-
-Job.associate = (models) => {
-	Job.belongsTo(models.Feature, {
-		as: 'feature',
-		foreignKey: {
-			fieldName: 'featureId',
+		scheduleBegin: {
+			type: DataTypes.DATE,
+			allowNull: false,
+			validate: {
+				notEmpty: {
+					msg: 'Please enter a datatime for schedule begin',
+				},
+			},
 		},
+		scheduleEnd: {
+			type: DataTypes.DATE,
+			allowNull: true,
+			validate: {
+				notEmpty: {
+					msg: 'Please enter a datetime for schedule end',
+				},
+			},
+		},
+		nextSchedule: {
+			type: DataTypes.STRING,
+			allowNull: true,
+		},
+		lastSchedule: {
+			type: DataTypes.STRING,
+			allowNull: true,
+		},
+		creatorId: DataTypes.INTEGER,
+	}, {
+		sequelize, // We need to pass the connection instance
+		modelName: 'Job', // We need to choose the model name
+		tableName: "task_Jobs"
 	});
 
-// 	Job.hasMany(models.Task, {
-// 		as: 'tasks',
-// 		foreignKey: {
-// 			fieldName: 'jobId',
-// 			allowNull: false,
-// 		},
-// 	});
+	return Job;
 };
-
-module.exports = { Job };

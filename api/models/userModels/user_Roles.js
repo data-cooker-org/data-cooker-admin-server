@@ -1,48 +1,34 @@
-const { Sequelize } = require('sequelize');
+'use strict';
+const {
+	Model
+} = require('sequelize');
 
-const sequelize = require('../../../config/database');
-const { User } = require('./user_Users');
+module.exports = (sequelize, DataTypes) => {
+	class Role extends Model {
+		/**
+		 * Helper method for defining associations.
+		 * This method is not a part of Sequelize lifecycle.
+		 * The `models/index` file will call this method automatically.
+		 */
+		static associate(models) {
+			// define association here
+		}
+	};
+	Role.init({
+		// id: {
+		//   type: DataTypes.INTEGER,
+		//   primaryKey: true,
+		//   autoIncrement: true,
+		// },
+		roleName: {
+			type: DataTypes.STRING,
+			unique: true,
+		},
+	}, {
+		sequelize, // We need to pass the connection instance
+		modelName: 'Role', // We need to choose the model name
+		tableName: 'user_Roles'
+	});
 
-const Role = sequelize.define('Role', {
-	// id: {
-	//   type: Sequelize.INTEGER,
-	//   primaryKey: true,
-	//   autoIncrement: true,
-	// },
-	roleName: {
-		type: Sequelize.STRING,
-		unique: true,
-	},
-}, {
-	sequelize, // We need to pass the connection instance
-	modelName: 'Role', // We need to choose the model name
-	tableName: 'user_Roles'
-});
-
-
-Role.associate = (models) => {
-	// Role.belongsTo(models.Feature, {
-	// 	as: 'feature',
-	// 	foreignKey: {
-	// 		fieldName: 'featureId',
-	// 	},
-	// });
-
-	// Role.hasMany(models.User, {
-	// 	as: 'users',
-	// 	foreignKey: {
-	// 		fieldName: 'roleId',
-	// 		allowNull: true,
-	// 	},
-	// });
-
-	// Role.hasMany(models.Permission, {
-	// 	as: 'permissions',
-	// 	foreignKey: {
-	// 		fieldName: 'roleId',
-	// 		allowNull: true,
-	// 	},
-	// });
+	return Role;
 };
-
-module.exports = { Role };

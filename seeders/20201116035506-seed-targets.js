@@ -1,4 +1,5 @@
 'use strict';
+const { Op } = require('sequelize');
 
 module.exports = {
 	up: async (queryInterface, Sequelize) => {
@@ -17,16 +18,16 @@ module.exports = {
 				"targetLabel": "Test target 1",
 				"targetData": "test_target_1",
 				"batchControlColumn": "data_ts",
-				batchControlSize: 5,
+				batchControlSize: 1440,
 				batchControlNext: "DATEADD(MINUTE, :2, :1)",
-				batchProcessed: new Date(),
-				batchScheduleType: "MINUTES",
-				patternColumns: "[]",
-				groupByPattern: 5,
+				batchProcessed: new Date('2020-11-25'),
+				batchScheduleType: "DAILY",
+				patternColumns: '["aa", "ab", "ac", "ad"]',
+				groupByPattern: 10,
 				groupByFlexible: true,
-				groupByColumns: "[]",
-				aggregateColumns: "[]",
-				aggregateFunctions: "[]",
+				groupByColumns: '["ab:ab", "ad:ad"]',
+				aggregateColumns: '["ba:ba", "bb:bb", "bc:bc"]',
+				aggregateFunctions: '["SUM(?)", "AVG(?)", "COUNT(*)"]',
 				"creatorId": 2,
 				createdAt: new Date(),
 				updatedAt: new Date()
@@ -37,16 +38,16 @@ module.exports = {
 				"targetLabel": "Test target 2",
 				"targetData": "test_target_2",
 				"batchControlColumn": "data_ts",
-				batchControlSize: 5,
+				batchControlSize: 1440,
 				batchControlNext: "DATEADD(MINUTE, :2, :1)",
-				batchProcessed: new Date(),
-				batchScheduleType: "MINUTES",
-				patternColumns: "[]",
-				groupByPattern: 5,
+				batchProcessed: new Date('2020-11-25'),
+				batchScheduleType: "DAILY",
+				patternColumns: '["aa", "ab", "ac", "ad"]',
+				groupByPattern: 0,
 				groupByFlexible: true,
-				groupByColumns: "[]",
-				aggregateColumns: "[]",
-				aggregateFunctions: "[]",
+				groupByColumns: '["aa:aa", "ab:ab", "ac:ac", "ad:ad"]',
+				aggregateColumns: '["ba:ba", "bc:bc"]',
+				aggregateFunctions: '["SUM(?)", "AVG(?)"]',
 				"creatorId": 2,
 				createdAt: new Date(),
 				updatedAt: new Date()
@@ -64,7 +65,9 @@ module.exports = {
 		 */
 		return queryInterface.bulkDelete('agg_Targets', [
 			{
-				id: 0
+				id: {
+					[Op.gt]: -9
+				  }
 			}
 		])
 	}

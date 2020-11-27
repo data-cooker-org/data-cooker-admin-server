@@ -79,7 +79,7 @@ const SourceController = () => {
 		});
 
 		if (source) {
-			res.json({ source });
+			res.json(source);
 		} else {
 			res.status(404).json({ message: 'Source id not found.' });
 		}

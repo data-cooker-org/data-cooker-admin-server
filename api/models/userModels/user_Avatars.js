@@ -1,44 +1,40 @@
-const { Sequelize } = require('sequelize');
+'use strict';
+const {
+	Model
+} = require('sequelize');
 
-const sequelize = require('../../../config/database');
-const { User } = require('./user_Users');
+module.exports = (sequelize, DataTypes) => {
+	class Avatar extends Model {
+		/**
+		 * Helper method for defining associations.
+		 * This method is not a part of Sequelize lifecycle.
+		 * The `models/index` file will call this method automatically.
+		 */
+		static associate(models) {
+			// define association here
+		}
+	};
+	Avatar.init({
+		// id: {
+		//   type: DataTypes.INTEGER,
+		//   primaryKey: true,
+		//   autoIncrement: true,
+		// },
+		avatarData: {
+			type: DataTypes.STRING(8000),
+			unique: false,
+		},
+		isPublic: {
+			type: DataTypes.BOOLEAN,
+			allowNull: false,
+		},
+		creatorId: DataTypes.INTEGER,
+	}, {
+		sequelize, // We need to pass the connection instance
+		modelName: 'Avatar', // We need to choose the model name
+		tableName: 'user_Avatars'
+	});
 
-const Avatar = sequelize.define('Avatar', {
-	// id: {
-	//   type: Sequelize.INTEGER,
-	//   primaryKey: true,
-	//   autoIncrement: true,
-	// },
-	avatarData: {
-		type: Sequelize.STRING(8000),
-		unique: false,
-	},
-	isPublic: {
-		type: Sequelize.BOOLEAN,
-		allowNull: false,
-	},
-	creatorId: Sequelize.INTEGER,
-}, {
-	sequelize, // We need to pass the connection instance
-	modelName: 'Avatar', // We need to choose the model name
-	tableName: 'user_Avatars'
-});
 
-Avatar.associate = (models) => {
-	// Avatar.belongsTo(models.Feature, {
-	// 	as: 'feature',
-	// 	foreignKey: {
-	// 		fieldName: 'featureId',
-	// 	},
-	// });
-
-	// Avatar.hasMany(models.User, {
-	// 	as: 'users',
-	// 	foreignKey: {
-	// 		fieldName: 'avatarId',
-	// 		allowNull: true,
-	// 	},
-	// });
+	return Avatar;
 };
-
-module.exports = { Avatar };

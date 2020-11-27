@@ -1,4 +1,5 @@
 'use strict';
+const { Op } = require('sequelize');
 
 module.exports = {
 	up: async (queryInterface, Sequelize) => {
@@ -54,7 +55,9 @@ module.exports = {
 		 */
 		return queryInterface.bulkDelete('media_Courses', [
 			{
-				id: 0
+				id: {
+					[Op.gt]: -9
+				  }
 			}
 		])
 	}
