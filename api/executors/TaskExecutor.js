@@ -2,27 +2,16 @@ const schedule = require('node-schedule');
 const taskz = require("taskz");
 
 const db = require('../models');
-const Aggregator = require('./AggExecutor/Aggregator');
+const BatchProcessor = require('./Aggregator/BatchProcessor');
 
-const runRawQuery = (query, id, sourceEnabled) => {
-	db.sequelize.query(query, {
-		replacements: { sourceId: id, sourceEnabled: sourceEnabled },
-		raw: false,
-		type: db.sequelize.QueryTypes.SELECT
-	}).then(sources => {
-		console.log(sources);
-		// 	let.push(item);
-		return sources;
-	});
-};
 
-const taskExecutor = (taskDefinition => {
+const TaskExecutor = (taskDefinition => {
 	const { featureId, targetData } = JSON.parse(taskDefinition);
 	switch (featureId) {
 		case 2:
 			const scriptOnly = false;
 			const logDetails = true;
-			return Aggregator().BatchProcessor(targetData, scriptOnly, logDetails);
+			return BatchProcessor(targetData, scriptOnly, logDetails);
 			break;
 		default:
 			console.log("Skip other type of job task for now ...");
@@ -41,7 +30,7 @@ class Tasker {
 				task: () => {
 					// console.log('Running job task: ' + JSON.stringify(task.taskName));
 					// return runRawQuery(query, task.id, false);
-					return taskExecutor(task.taskDefinition);
+					return TaskExecutor(task.taskDefinition);
 				}
 			};
 			scheduledTasks.push(scheduledTask);
