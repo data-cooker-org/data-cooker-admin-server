@@ -24,7 +24,7 @@ module.exports = {
 				type: Sequelize.BOOLEAN
 			},
 			repeatSchedule: {
-				type: Sequelize.STRING
+				type: Sequelize.BOOLEAN
 			},
 			scheduleType: {
 				type: Sequelize.STRING
