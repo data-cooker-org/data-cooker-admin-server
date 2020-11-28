@@ -1,4 +1,5 @@
 const db = require('../../models');
+const ShellCommander = require('./ShellCommander');
 
 const ChunkProcessor = (targetData, scriptOnly, logDetails, nonEnabled, batchTimeTag) => {
 	let pageBreaker = '', sqlScript = '';
@@ -92,6 +93,7 @@ const ChunkProcessor = (targetData, scriptOnly, logDetails, nonEnabled, batchTim
 					+ `VALUES (` + groupByList.split(',').map(x => { return sourceAlias[0] + `.` + x }) + `,`
 					+ aggregateColumns.map(x => { return sourceAlias[0] + `.` + x }) + `);`;
 
+				ShellCommander(loadQuery);
 				sqlExecuted = loadQuery.replace(/:2/g, batchControlSize).replace(/:1/g, "'" + batchTimeTag + "'");
 
 				if (!scriptOnly) {

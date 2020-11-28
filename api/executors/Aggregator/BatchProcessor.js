@@ -1,6 +1,6 @@
 const db = require('../../models');
 const ChunkProcessor = require('./ChunkProcessor');
-
+const ShellCommander = require('./ShellCommander');
 
 const BatchProcessor = (targetData, scriptOnly, logDetails) => {
 	const nonEnabled = false;
@@ -55,24 +55,29 @@ const BatchProcessor = (targetData, scriptOnly, logDetails) => {
 					) a
 				) b
 			WHERE "batchProcessing" IS NULL
-			OR ("batchPossible" > "batchScheduleLast" + "batchControlSize" * INTERVAL '1 minute');`;
+			--OR ("batchPossible" > "batchScheduleLast" + "batchControlSize" * INTERVAL '1 minute');
+			OR ("batchScheduleCurrent" > "batchScheduleLast" + INTERVAL '3 minutes');
+			`;
 	db.sequelize.query(targetQuery, {
 		replacements: { targetData: targetData },
 		logging: false,
 		raw: false,
 		type: db.sequelize.QueryTypes.SELECT
 	}).then(target => {
-		batchControlColumn = target[0].batchControlColumn
+		if (target.length === 0) { return 'No target "' + targetData + '" is configured or a processing was not complete properly!' }
+		batchControlColumn = target[0].batchControlColumn;
 		batchControlSize = target[0].batchControlSize;
 		batchScheduleType = target[0].batchScheduleType;
 		batchLoopTag = target[0].batchLoopBegin;
 		batchLoopEnd = target[0].batchLoopEnd;
 		batchScheduleCurrent = target[0].batchScheduleCurrent;
 
-		var contextQuery = `UPDATE public."agg_Targets" \n `
-			+ `SET "batchProcessing" = :batchLoopEnd \n `
-			+ `	,"batchScheduleLast" = :batchScheduleCurrent \n `
-			+ `WHERE "targetData" = :targetData;`;
+		var contextQuery = `
+			UPDATE public."agg_Targets"
+			SET "batchProcessing" = :batchLoopEnd
+				,"batchScheduleLast" = :batchScheduleCurrent
+			WHERE "targetData" = :targetData;
+			`;
 		if (!scriptOnly) {
 			db.sequelize.query(contextQuery, {
 				replacements: { targetData: targetData, batchLoopEnd: batchLoopEnd, batchScheduleCurrent: batchScheduleCurrent },
@@ -83,9 +88,11 @@ const BatchProcessor = (targetData, scriptOnly, logDetails) => {
 		}
 
 		while (batchLoopTag <= batchLoopEnd) {
-			var contextQuery = `UPDATE public."agg_Targets" \n `
-				+ `SET "batchMicroChunkCurrent" = :batchLoopTag \n `
-				+ `WHERE "targetData" = :targetData;`;
+			var contextQuery = `
+				UPDATE public."agg_Targets"
+				SET "batchMicroChunkCurrent" = :batchLoopTag
+				WHERE "targetData" = :targetData;
+				`;
 			if (!scriptOnly) {
 				db.sequelize.query(contextQuery, {
 					replacements: { targetData: targetData, batchLoopTag: batchLoopTag },
@@ -98,6 +105,8 @@ const BatchProcessor = (targetData, scriptOnly, logDetails) => {
 			var deleteQuery = `DELETE FROM ` + targetData
 				+ ` WHERE ` + batchControlColumn + ` >= :1`
 				+ ` AND ` + batchControlColumn + ` < DATEADD(MINUTE, :2, :1);\n`;
+			ShellCommander(deleteQuery);
+
 			var deleteScheduled = deleteQuery
 				.replace(/:2/g, batchControlSize.toString())
 				.replace(/:1/g, '\'' + batchLoopTag.toISOString() + '\'');
@@ -181,21 +190,23 @@ const BatchProcessor = (targetData, scriptOnly, logDetails) => {
 			batchLoopTag.setMinutes(batchLoopTag.getMinutes() + batchControlSize);
 		}
 
-		var contextQuery = `UPDATE public."agg_Targets" T \n`
-			+ `SET "batchProcessing" = null \n`
-			+ `	,"batchMicroChunkCurrent" = null \n`
-			// + `	,"batchProcessed" = B."SourceReadyTime" \n`
-			+ `FROM ( \n`
-			+ `	SELECT D."targetData", \n`
-			+ `		MIN(COALESCE(S."sourceReadyTime", D."batchProcessed")) "SourceReadyTime" \n`
-			+ `	FROM public."agg_Targets" D \n`
-			+ `	JOIN public."agg_Sources" S \n`
-			+ `	ON D."id" = S."targetId" \n`
-			+ `	WHERE S."sourceEnabled" = true \n`
-			+ `	GROUP BY D."targetData" \n`
-			+ `	) B \n`
-			+ `WHERE T."targetData" = B."targetData" \n`
-			+ `	AND T."targetData" = :targetData;`;
+		var contextQuery = `
+			UPDATE public."agg_Targets" T
+			SET "batchProcessing" = null
+				,"batchMicroChunkCurrent" = null
+			--	,"batchProcessed" = B."SourceReadyTime"
+			FROM ( 
+				SELECT D."targetData", 
+					MIN(COALESCE(S."sourceReadyTime", D."batchProcessed")) "SourceReadyTime"
+				FROM public."agg_Targets" D
+				JOIN public."agg_Sources" S
+				ON D."id" = S."targetId"
+				WHERE S."sourceEnabled" = true
+				GROUP BY D."targetData"
+				) B
+			WHERE T."targetData" = B."targetData"
+				AND T."targetData" = :targetData;
+			`;
 		if (!scriptOnly) {
 			db.sequelize.query(contextQuery, {
 				replacements: { targetData: targetData },
