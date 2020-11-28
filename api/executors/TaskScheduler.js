@@ -1,6 +1,6 @@
 // const { json } = require('body-parser');
 // const path = require('path');
-const Tasker = require('./TaskRunner');
+const Tasker = require('./TaskExecutor');
 const { Worker, Port, isMainThread, parentPort, workerData } = require('worker_threads');
 // const { Sequelize, QueryTypes } = require('sequelize');
 // const sequelize = require('../../config/database');
@@ -10,7 +10,7 @@ const { Worker, Port, isMainThread, parentPort, workerData } = require('worker_t
 const db = require('../models');
 // const { Job, Task, Target } = require('../models');
 
-const TaskController = () => {
+const TaskScheduler = () => {
 	const getAllJobs = () => {
 		const jobs = db.Job.findAll({
 			attributes: [
@@ -100,4 +100,4 @@ const TaskController = () => {
 };
 
 
-module.exports = TaskController;
+module.exports = TaskScheduler;
