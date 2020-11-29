@@ -1,15 +1,23 @@
 {
-    "development": {
-      "dialect": "sqlite",
-      "storage": "./db/database.sqlite"
-    },
-    "test": {
-      "dialect": "sqlite",
-      "storage": "./db/database.sqlite"
-    },
-    "production": {
-      "dialect": "sqlite",
-      "storage": "./db/database.sqlite"
-    }
-  }
-  
+	"development": {
+		"username": "postgres",
+		"password": "0414",
+		"database": "data-cooker",
+		"host": "localhost",
+		"dialect": "postgres"
+	},
+	"test": {
+		"username": "postgres",
+		"password": "0414",
+		"database": "data-cooker",
+		"host": "localhost",
+		"dialect": "postgres"
+	},
+	"production": {
+		"username": "postgres",
+		"password": "0414",
+		"database": "data-cooker",
+		"host": "localhost",
+		"dialect": "postgres"
+	}
+}

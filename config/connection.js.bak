@@ -1,9 +1,9 @@
 const development = {
-	database: 'data-cooker',
-	username: 'postgres',
-	password: '0414',
+	database: 'databasename',
+	username: 'username',
+	password: 'password',
 	host: 'localhost',
-	dialect: 'postgres',
+	dialect: 'sqlite' || 'mysql' || 'postgres',
 };
 
 const testing = {
@@ -20,6 +20,9 @@ const production = {
 	password: process.env.DB_PASS,
 	host: process.env.DB_HOST || 'localhost',
 	dialect: 'postgres',
+	// // new added, may not neccssary
+	// secret: process.env.JWT_SECRET, /* services->auth-service.js */
+	// port: process.env.PORT, /* index.js */
 };
 
 module.exports = {
