@@ -1,14 +1,7 @@
-// const { json } = require('body-parser');
-// const path = require('path');
-const Tasker = require('./TaskExecutor');
+const { Tasker } = require('./TaskExecutor');
 const { Worker, Port, isMainThread, parentPort, workerData } = require('worker_threads');
-// const { Sequelize, QueryTypes } = require('sequelize');
-// const sequelize = require('../../config/database');
-// const sequelize = new Sequelize(db);
-// const sequelize = new Sequelize('../../config/database');
 
 const db = require('../models');
-// const { Job, Task, Target } = require('../models');
 
 const TaskScheduler = () => {
 	const getAllJobs = () => {
@@ -49,7 +42,7 @@ const TaskScheduler = () => {
 				'lastCompleteTime',
 				'creatorId',
 			],
-			where: { "jobId": jobId },
+			where: { 'jobId': jobId },
 			order: ['jobStep'],
 		});
 		return tasks;
@@ -64,10 +57,10 @@ const TaskScheduler = () => {
 				jobTasks.push(taskInfo);
 			}
 			const jobDetail = { jobInfo, jobTasks };
-			const worker = new Tasker({ workerData: jobDetail });
+			const tasker = new Tasker({ workerData: jobDetail });
 
 			// do some settings here
-			return worker;
+			return tasker;
 		});
 	}
 

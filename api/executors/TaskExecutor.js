@@ -1,7 +1,7 @@
 const schedule = require('node-schedule');
-const taskz = require("taskz");
+const taskz = require('taskz');
 
-const db = require('../models');
+// const db = require('../models');
 const BatchProcessor = require('./Aggregator/BatchProcessor');
 
 
@@ -14,7 +14,7 @@ const TaskExecutor = (taskDefinition => {
 			return BatchProcessor(targetData, scriptOnly, logDetails);
 			break;
 		default:
-			console.log("Skip other type of job task for now ...");
+			console.log('Skip other type of job task for now ...');
 			return null;
 	}
 });
@@ -42,4 +42,4 @@ class Tasker {
 	}
 };
 
-module.exports = Tasker;
+module.exports = { Tasker, TaskExecutor };

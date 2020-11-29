@@ -1,7 +1,24 @@
-// worker-script.js
 const { parentPort, workerData } = require('worker_threads');
 const Scheduler = require('node-schedule');
 const taskz = require('taskz');
+
+/**
+ * server configuration
+ */
+// const config = require('../../config/');
+// const auth = require('../policies/auth.policy');
+// const dbService = require('../services/db.service');
+// const { schema } = require('./graphql');
+
+// // environment: development, testing, production
+// const environment = process.env.NODE_ENV;
+
+// /**
+//  * express application
+//  */
+// const DB = dbService(environment, config.migrate).start();
+
+const { TaskExecutor } = require('./TaskExecutor');
 
 parentPort.once('message', (message) => {
 	console.log(message);
@@ -15,15 +32,15 @@ function capitalise(text) {
 
 Scheduler.scheduleJob(workerData.jobInfo.scheduleCron, () => {
 	parentPort.postMessage('Runing job: ' + workerData.jobInfo.jobName);
-	const scheduledTasks = workerData.jobTasks.map((item) => {
+	const scheduledTasks = workerData.jobTasks.map((task) => {
 		return {
-			text: item.taskName,
-			stopOnError: item.stopOnError,
+			text: task.taskName,
+			stopOnError: task.stopOnError,
 			task: () => {
-				console.log('Runing task: ' + item.taskName);
-				// for (var i = 1; i < 10000000; i++) {
-				// 	for (var j = 1; j < 100000; j++) { var a = j; };
-				// };
+				console.log('Runing task: ' + task.taskName);
+				const taskResult = TaskExecutor(task.taskDefinition);
+				// console.log(taskResult);
+				return taskResult;
 			},
 		};
 	});
