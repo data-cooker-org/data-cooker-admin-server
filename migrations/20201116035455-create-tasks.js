@@ -11,9 +11,6 @@ module.exports = {
 			jobStep: {
 				type: Sequelize.INTEGER
 			},
-			featureId: {
-				type: Sequelize.INTEGER
-			},
 			taskName: {
 				type: Sequelize.STRING
 			},
@@ -23,20 +20,23 @@ module.exports = {
 			taskDescription: {
 				type: Sequelize.STRING
 			},
+			taskFeatureId: {
+				type: Sequelize.INTEGER
+			},
 			taskStatus: {
 				type: Sequelize.STRING
 			},
 			stopOnError: {
 				type: Sequelize.BOOLEAN
 			},
-			taskWorker: {
-				type: Sequelize.STRING
-			},
 			lastScheduledTime: {
 				type: Sequelize.DATE
 			},
 			lastCompleteTime: {
 				type: Sequelize.DATE
+			},
+			featureId: {
+				type: Sequelize.INTEGER
 			},
 			creatorId: {
 				type: Sequelize.INTEGER
