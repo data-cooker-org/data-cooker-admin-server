@@ -35,7 +35,7 @@ const TaskScheduler = () => {
 				'taskName',
 				'taskDefinition',
 				'taskDescription',
-				'taskWorker',
+				'taskFeatureId',
 				'taskStatus',
 				'stopOnError',
 				'lastScheduledTime',

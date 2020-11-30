@@ -52,6 +52,15 @@ module.exports = (sequelize, DataTypes) => {
 				},
 			},
 		},
+		taskDefinition: {
+			type: DataTypes.BLOB,
+			allowNull: true,
+			validate: {
+				notEmpty: {
+					msg: 'Please enter task definition data',
+				},
+			},
+		},
 		taskDescription: {
 			type: DataTypes.STRING,
 			allowNull: true,
@@ -61,9 +70,9 @@ module.exports = (sequelize, DataTypes) => {
 				},
 			},
 		},
-		taskWorker: {
+		taskFeatureId: {
 			type: DataTypes.INTEGER,
-			allowNull: false,
+			allowNull: true,
 			validate: {
 				notEmpty: {
 					msg: 'Please enter a true or false to enable or disable task',
