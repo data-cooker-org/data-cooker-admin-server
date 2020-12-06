@@ -13,9 +13,9 @@ const mapRoutes = require('express-routes-mapper');
 /**
  * self owned libraries
  */
-// run TaskScheduler as a local tasks, run WorkerFilePath for threads
-const TaskScheduler = require('./executors/TaskScheduler')();
-const WorkerFilePath = require.resolve('./executors/ThreadWorker.js');
+// run TaskExecutor as a local tasks, run WorkerFilePath for threads
+const Executors = require('./executors');
+const WorkerFilePath = require.resolve('./ThreadWorker.js');
 
 /**
  * server configuration
@@ -104,16 +104,16 @@ server.listen(config.port, () => {
 
 	// console.log(process.env);
 
-	TaskScheduler.getAllJobs().then((jobs) => {
+	Executors['TaskExecutor'].getAllJobs().then((jobs) => {
 		jobs.forEach((job) => {
 			const jobInfo = job.dataValues;
-			const executor = environment !== 'development' ? 'local tasker' : 'thread worker';
+			const executor = environment === 'development' ? 'local tasker' : 'thread worker';
 			console.log('Initializing job: ' + JSON.stringify(jobInfo.jobName) + ' is a ' + executor);
 			if (executor === 'local tasker') {
-				scheduledJobs[jobInfo.jobName] = TaskScheduler.runTasker(jobInfo);
+				scheduledJobs[jobInfo.jobName] = Executors['TaskExecutor'].runTasker(Executors, jobInfo);
 			}
 			else {
-				scheduledJobs[jobInfo.jobName] = TaskScheduler.runWorker(WorkerFilePath, jobInfo);
+				scheduledJobs[jobInfo.jobName] = Executors['TaskExecutor'].runWorker(WorkerFilePath, jobInfo);
 				// scheduledJobs[jobInfo.jobName].postMessage('ping');  // test worker, correct if return "PING"
 			}
 		});

@@ -18,7 +18,7 @@ const taskz = require('taskz');
 //  */
 // const DB = dbService(environment, config.migrate).start();
 
-const { TaskExecutor } = require('./TaskExecutor');
+const Executors = require('./executors');
 
 parentPort.once('message', (message) => {
 	console.log(message);
@@ -38,7 +38,7 @@ Scheduler.scheduleJob(workerData.jobInfo.scheduleCron, () => {
 			stopOnError: task.stopOnError,
 			task: () => {
 				console.log('Runing task: ' + task.taskName);
-				const taskResult = TaskExecutor(task.taskDefinition);
+				const taskResult = Executors['TaskExecutor'].TaskRouter(Executors, task.taskDefinition);
 				// console.log(taskResult);
 				return taskResult;
 			},

@@ -67,5 +67,7 @@ typings/
 yarn.lock
 
 # db sqlite
-
 db/database.sqlite
+
+# bak file
+*.bak

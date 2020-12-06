@@ -1,11 +1,12 @@
 'use strict';
 
-const fs = require('fs');
+// const fs = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/../../config/config.json')[env];
+const treeService = require('../services/tree.service');
 const db = {};
 
 let sequelize;
@@ -15,16 +16,16 @@ if (config.use_env_variable) {
 	sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
 
-const walkSync = (dir, filelist = []) => {
-	fs.readdirSync(dir).forEach(file => {
-		filelist = fs.statSync(path.join(dir, file)).isDirectory()
-			? walkSync(path.join(dir, file), filelist)
-			: filelist.concat(path.join(dir, file));
-	});
-	return filelist;
-}
+// const walkSync = (dir, filelist = []) => {
+// 	fs.readdirSync(dir).forEach(file => {
+// 		filelist = fs.statSync(path.join(dir, file)).isDirectory()
+// 			? walkSync(path.join(dir, file), filelist)
+// 			: filelist.concat(path.join(dir, file));
+// 	});
+// 	return filelist;
+// }
 
-walkSync(__dirname)
+treeService().walkSync(__dirname)
 	.filter(file => {
 		return (file.indexOf('.') !== 0) && (!file.endsWith(basename)) && (file.slice(-3) === '.js');
 	})
